@@ -1,6 +1,6 @@
 import requests
 import yagmail
-import datetime
+from datetime import datetime
 from bs4 import BeautifulSoup
 import os
 from dotenv import load_dotenv
@@ -39,7 +39,7 @@ date_str = weather_data["hourly"]["time"][0]
 
 def format_date(date_str):
     # Parse the input date string
-    date_obj = datetime.datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
+    date_obj = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
 
     # Format the parsed date into "Month Day, Year" format
     formatted_date = date_obj.strftime('%B %d, %Y')
