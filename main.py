@@ -3,6 +3,13 @@ import yagmail
 from datetime import datetime
 from bs4 import BeautifulSoup
 import secrets
+import os
+
+LONGITUDE = os.environ["longitude"]
+LATITUDE = os.environ["longitude"]
+MY_GMAIL_USER = os.environ["my_email_user"]
+MY_GMAIL_PASS = os.environ["my_gmail_pass"]
+EMAIL_SEND_TO = os.environ["email_send_to"]
 
 # define the hours you care about the weather in 24h hour format
 BEGIN_TIME = 6
