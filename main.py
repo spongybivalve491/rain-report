@@ -1,15 +1,20 @@
 import requests
 import yagmail
-from datetime import datetime
+import datetime
 from bs4 import BeautifulSoup
-import secrets
 import os
+from dotenv import load_dotenv
+# import secrets - removed in favor of reading secrets from the environment
 
-LONGITUDE = os.environ["longitude"]
-LATITUDE = os.environ["longitude"]
-MY_GMAIL_USER = os.environ["my_email_user"]
-MY_GMAIL_PASS = os.environ["my_gmail_pass"]
-EMAIL_SEND_TO = os.environ["email_send_to"]
+
+# Load environment variables from .env file
+load_dotenv()
+
+LONGITUDE = os.getenv("LONGITUDE")
+LATITUDE = os.getenv("LATITUDE")
+MY_GMAIL_USER = os.getenv("MY_GMAIL_USER")
+MY_GMAIL_PASS = os.getenv("MY_GMAIL_PASS")
+EMAIL_SEND_TO = os.getenv("EMAIL_SEND_TO")
 
 # define the hours you care about the weather in 24h hour format
 BEGIN_TIME = 6
@@ -34,7 +39,7 @@ date_str = weather_data["hourly"]["time"][0]
 
 def format_date(date_str):
     # Parse the input date string
-    date_obj = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
+    date_obj = datetime.datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
 
     # Format the parsed date into "Month Day, Year" format
     formatted_date = date_obj.strftime('%B %d, %Y')
