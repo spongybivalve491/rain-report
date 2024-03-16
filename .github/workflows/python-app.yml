@@ -28,4 +28,5 @@ jobs:
           MY_GMAIL_USER: ${{ secrets.MY_GMAIL_USER }}
           MY_GMAIL_PASS: ${{ secrets.MY_GMAIL_PASS }}
           EMAIL_SEND_TO: ${{ secrets.EMAIL_SEND_TO }}
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
         run: python main.py

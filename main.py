@@ -1,36 +1,29 @@
+import random
 import requests
 import yagmail
-from datetime import datetime
-from bs4 import BeautifulSoup
+import datetime
 import os
-from dotenv import load_dotenv
-# import secrets - removed in favor of reading secrets from the environment
+import dotenv
 
-
-# Load environment variables from .env file
-load_dotenv()
+dotenv.load_dotenv()
 
 LONGITUDE = os.getenv("LONGITUDE")
 LATITUDE = os.getenv("LATITUDE")
 MY_GMAIL_USER = os.getenv("MY_GMAIL_USER")
 MY_GMAIL_PASS = os.getenv("MY_GMAIL_PASS")
 EMAIL_SEND_TO = os.getenv("EMAIL_SEND_TO")
+UNSPLASH_ACCESS_KEY = os.getenv("UNSPLASH_ACCESS_KEY")
 
 # define the hours you care about the weather in 24h hour format
-BEGIN_TIME = 6
-END_TIME = 21
+begin_time = 6
+end_time = 21
 
-wildlife_website_url = "https://dailywildlifephoto.nathab.com/"
+# search query for random images
+unsplash_query = ["wild bird", "wild animal", "endangered species"]
+
 weather_api = f"https://api.open-meteo.com/v1/forecast?latitude={LATITUDE}&longitude=" + \
               f"{LONGITUDE}&hourly=precipitation&timezone=America%2FLos_Angeles&forecast_days=1"
-
-response_wildlife = requests.get(wildlife_website_url)
-soup = BeautifulSoup(response_wildlife.content, 'html.parser')
-
-image_url = soup.find('img').get('src')
-info_location = soup.find('h2', class_='what-and-where')
-species = info_location.find_all('span')[0].text
-location = info_location.find_all('span')[1].text
+unsplash_api = "https://api.unsplash.com/photos/random/"
 
 response_weather = requests.get(weather_api)
 weather_data = response_weather.json()
@@ -38,16 +31,16 @@ weather_data = response_weather.json()
 date_str = weather_data["hourly"]["time"][0]
 
 def format_date(date_str):
-    # Parse the input date string
-    date_obj = datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
-
-    # Format the parsed date into "Month Day, Year" format
+    date_obj = datetime.datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
     formatted_date = date_obj.strftime('%B %d, %Y')
 
     return formatted_date
 
+
+readable_date = format_date(date_str)
 rainfall_info = ''
-for hour in range(BEGIN_TIME, END_TIME):
+
+for hour in range(begin_time, end_time):
     precipitation = weather_data["hourly"]["precipitation"][hour]
     time_label = 'AM' if hour < 12 else 'PM'
     hour_label = hour if hour <= 12 else hour - 12
@@ -61,13 +54,27 @@ data_content = str([rainfall_info])
 if not rainfall_info:
     data_content = "Clear skies today :)"
 
+unsplash_parameters = {
+    "query": random.choice(unsplash_query),
+    "client_id": UNSPLASH_ACCESS_KEY,
+    "count": 1
+}
+
+unsplash_reponse = requests.get(url=unsplash_api, params=unsplash_parameters)
+unsplash_data = unsplash_reponse.json()
+unsplash_img_url = unsplash_data[0]["urls"]["raw"]
+unsplash_author = unsplash_data[0]["user"]["username"]
+unsplash_author_portfolio = unsplash_data[0]["user"]["portfolio_url"]
+
+if unsplash_author_portfolio is None:
+    unsplash_author_portfolio = unsplash_data[0]["links"]["self"]
+
+
 contents = (
     f"Good morning, buddy!<br><br>{data_content} <br><br> ---------------------------------------------------------------"
-    f"<br><br> Here's NatHab's wildlife picture of the day! <br><br> <img src='{image_url}' height='500'> <br><br>"
-    f"Species: <b>{species}</b> <br> Location: {location}"
+    f"<br><br>Here's some wildlife!<br><br> <img src='{unsplash_img_url}' height= '500'><br><br>"
+    f"Author: <b>{unsplash_author}</b>, <a href={unsplash_author_portfolio}>{unsplash_author_portfolio}</a>"
 )
 
-readable_date = format_date(date_str)
 yag = yagmail.SMTP(MY_GMAIL_USER, MY_GMAIL_PASS)
-
 yag.send(to=EMAIL_SEND_TO, subject='Rain report for '+ readable_date, contents=contents)
