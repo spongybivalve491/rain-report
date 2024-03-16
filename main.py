@@ -16,8 +16,8 @@ BEGIN_TIME = 6
 END_TIME = 21
 
 wildlife_website_url = "https://dailywildlifephoto.nathab.com/"
-weather_api = f"https://api.open-meteo.com/v1/forecast?latitude={secrets.secrets.get('LATITUDE')}&longitude=" + \
-              f"{secrets.secrets.get('LONGITUDE')}&hourly=precipitation&timezone=America%2FLos_Angeles&forecast_days=1"
+weather_api = f"https://api.open-meteo.com/v1/forecast?latitude={LATITUDE}&longitude=" + \
+              f"{LONGITUDE}&hourly=precipitation&timezone=America%2FLos_Angeles&forecast_days=1"
 
 response_wildlife = requests.get(wildlife_website_url)
 soup = BeautifulSoup(response_wildlife.content, 'html.parser')
@@ -63,6 +63,6 @@ contents = (
 )
 
 readable_date = format_date(date_str)
-yag = yagmail.SMTP(secrets.secrets.get("MY_GMAIL_USER"), secrets.secrets.get("MY_GMAIL_PASS"))
+yag = yagmail.SMTP(MY_GMAIL_USER, MY_GMAIL_PASS)
 
-yag.send(to=secrets.secrets.get("EMAIL_SEND_TO"), subject='Rain report for '+ readable_date, contents=contents)
+yag.send(to=EMAIL_SEND_TO, subject='Rain report for '+ readable_date, contents=contents)
