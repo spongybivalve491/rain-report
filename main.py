@@ -19,7 +19,7 @@ begin_time = 6
 end_time = 21
 
 # search query for random images
-unsplash_query = ["wild bird", "wild animal", "endangered species"]
+unsplash_query = ["wild bird", "wild animal", "endangered species", "wild fish"]
 
 weather_api = f"https://api.open-meteo.com/v1/forecast?latitude={LATITUDE}&longitude=" + \
               f"{LONGITUDE}&hourly=precipitation&timezone=America%2FLos_Angeles&forecast_days=1"
@@ -54,8 +54,10 @@ data_content = str(rainfall_info)
 if not rainfall_info:
     data_content = "Clear skies today :)"
 
+unsplash_chosen_query = random.choice(unsplash_query)
+
 unsplash_parameters = {
-    "query": random.choice(unsplash_query),
+    "query": unsplash_chosen_query,
     "client_id": UNSPLASH_ACCESS_KEY,
     "count": 1
 }
@@ -72,7 +74,7 @@ if unsplash_author_portfolio is None:
 
 contents = (
     f"Good morning, buddy!<br><br>{data_content} <br><br> ---------------------------------------------------------------"
-    f"<br><br>Here's some wildlife!<br><br> <img src='{unsplash_img_url}' height= '500'><br><br>"
+    f"<br><br>Here's some wildlife! This came from the query \"{unsplash_chosen_query}\".<br><br> <img src='{unsplash_img_url}' height='600'><br><br>"
     f"Author: <b>{unsplash_author}</b>, <a href={unsplash_author_portfolio}>{unsplash_author_portfolio}</a>"
 )
 

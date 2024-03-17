@@ -2,11 +2,11 @@ name: run main.py
 
 on:
   schedule:
-    - cron: '58 13 * * *' # At 5:58 each morning
+    - cron: '48 12 * * *' # At 5:58 each morning
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latestib
     steps:
 
       - name: checkout repo content
