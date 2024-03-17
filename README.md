@@ -10,7 +10,7 @@ You also get a random picture because why not?
 Precipitation data comes curtosy of [open-meteo.com](open-meteo.com). No API key is required. Rain is reported in mm.
 
 ##### Lattitude and longitude
-These values are needed to get data. Use a site like [https://www.gps-coordinates.net/](https://www.gps-coordinates.net/) to find them for your location. These files should be stored locally in a .env file or under Secrets -> Actions on GitHub for scheduled running of main.py.
+These values are needed to get data. Use a site like [https://www.gps-coordinates.net/](https://www.gps-coordinates.net/) to find them for your location. These files, `LATITUDE` and `LONGITUDE`, should be stored locally in a .env file or under Secrets -> Actions on GitHub (for scheduled running of main.py).
 ##### Local variables
 `start_time` and `end_time` are defined in main.py. Use integers between 0-24 to set the interval that weather data will be collected.
 
