@@ -38,18 +38,18 @@ def format_date(date_str):
 
 
 readable_date = format_date(date_str)
-rainfall_info = ''
+rainfall_info = ""
 
 for hour in range(begin_time, end_time):
     precipitation = weather_data["hourly"]["precipitation"][hour]
-    time_label = 'AM' if hour < 12 else 'PM'
+    time_label = "AM" if hour < 12 else "PM"
     hour_label = hour if hour <= 12 else hour - 12
     if hour_label == 0:
         hour_label = 12
     if precipitation > 0:
         rainfall_info += f"During {hour_label}{time_label}, there will be {precipitation} mm of rain.\n"
 
-data_content = str([rainfall_info])
+data_content = str(rainfall_info)
 
 if not rainfall_info:
     data_content = "Clear skies today :)"
