@@ -69,7 +69,7 @@ unsplash_author = unsplash_data[0]["user"]["username"]
 unsplash_author_portfolio = unsplash_data[0]["user"]["portfolio_url"]
 
 if unsplash_author_portfolio is None:
-    unsplash_author_portfolio = unsplash_data[0]["links"]["self"]
+    unsplash_author_portfolio = unsplash_data[0]["links"]["html"]
 
 
 contents = (
