@@ -21,6 +21,9 @@ end_time = 21
 # search query for random images
 unsplash_query = ["wild bird", "wild animal", "endangered species", "wild fish"]
 
+# fetch a portrait orientation photo
+unsplash_optimized_for_mobile = True
+
 weather_api = f"https://api.open-meteo.com/v1/forecast?latitude={LATITUDE}&longitude=" + \
               f"{LONGITUDE}&hourly=precipitation&timezone=America%2FLos_Angeles&forecast_days=1"
 unsplash_api = "https://api.unsplash.com/photos/random/"
@@ -61,6 +64,9 @@ unsplash_parameters = {
     "client_id": UNSPLASH_ACCESS_KEY,
     "count": 1
 }
+
+if unsplash_optimized_for_mobile:
+    unsplash_parameters["orientation"] = "portrait"
 
 unsplash_reponse = requests.get(url=unsplash_api, params=unsplash_parameters)
 unsplash_data = unsplash_reponse.json()
