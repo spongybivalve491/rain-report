@@ -20,10 +20,11 @@ end_time = 21
 
 # search query for random images
 unsplash_query = ["wild bird", "wild animal", "endangered species", "wild fish", "ocean", "train", "boat", "storm",
-                  "crab", "nature", "storm", "mountain", "fire", "camping", "wildlife"]
+                  "crab", "nature", "storm", "mountain", "fire", "camping", "wildlife", "coast guard", "navy", "flower",
+                  "tree", "forest"]
 
 # fetch a portrait orientation photo
-unsplash_optimized_for_mobile = False
+unsplash_optimized_for_mobile = True
 
 weather_api = f"https://api.open-meteo.com/v1/forecast?latitude={LATITUDE}&longitude=" + \
               f"{LONGITUDE}&hourly=precipitation&timezone=America%2FLos_Angeles&forecast_days=1"
@@ -34,14 +35,16 @@ weather_data = response_weather.json()
 
 date_str = weather_data["hourly"]["time"][0]
 
-def format_date(date_str):
-    date_obj = datetime.datetime.strptime(date_str, '%Y-%m-%dT%H:%M')
-    formatted_date = date_obj.strftime('%B %d, %Y')
-
+def format_date():
+    formatted_date = "{d:%A}, {d:%B} {d.day}, {d.year}".format(d=datetime.datetime.now())
     return formatted_date
 
+def current_time():
+    formatted_time = datetime.datetime.now().strftime("%I:%M %p")
+    return formatted_time
 
-readable_date = format_date(date_str)
+
+readable_date = format_date()
 rainfall_info = ""
 
 for hour in range(begin_time, end_time):
@@ -69,8 +72,8 @@ unsplash_parameters = {
 if unsplash_optimized_for_mobile:
     unsplash_parameters["orientation"] = "portrait"
 
-unsplash_reponse = requests.get(url=unsplash_api, params=unsplash_parameters)
-unsplash_data = unsplash_reponse.json()
+unsplash_response = requests.get(url=unsplash_api, params=unsplash_parameters)
+unsplash_data = unsplash_response.json()
 unsplash_img_url = unsplash_data[0]["urls"]["raw"]
 unsplash_author = unsplash_data[0]["user"]["username"]
 unsplash_author_portfolio = unsplash_data[0]["user"]["portfolio_url"]
@@ -86,4 +89,4 @@ contents = (
 )
 
 yag = yagmail.SMTP(MY_GMAIL_USER, MY_GMAIL_PASS)
-yag.send(to=EMAIL_SEND_TO, subject='Rain report for '+ readable_date, contents=contents)
+yag.send(to=EMAIL_SEND_TO, subject='Rain report for '+ readable_date + ' (' + current_time() + ")", contents=contents)
