@@ -19,10 +19,11 @@ begin_time = 6
 end_time = 21
 
 # search query for random images
-unsplash_query = ["wild bird", "wild animal", "endangered species", "wild fish"]
+unsplash_query = ["wild bird", "wild animal", "endangered species", "wild fish", "ocean", "train", "boat", "storm",
+                  "crab", "nature", "storm", "mountain", "fire", "camping", "wildlife"]
 
 # fetch a portrait orientation photo
-unsplash_optimized_for_mobile = True
+unsplash_optimized_for_mobile = False
 
 weather_api = f"https://api.open-meteo.com/v1/forecast?latitude={LATITUDE}&longitude=" + \
               f"{LONGITUDE}&hourly=precipitation&timezone=America%2FLos_Angeles&forecast_days=1"
@@ -55,7 +56,7 @@ for hour in range(begin_time, end_time):
 data_content = str(rainfall_info)
 
 if not rainfall_info:
-    data_content = "Clear skies today :)"
+    data_content = "Clear skies today (I think):)"
 
 unsplash_chosen_query = random.choice(unsplash_query)
 
@@ -79,8 +80,8 @@ if unsplash_author_portfolio is None:
 
 
 contents = (
-    f"Good morning, buddy!<br><br>{data_content} <br><br> ---------------------------------------------------------------"
-    f"<br><br>Here's some wildlife! This came from the query \"{unsplash_chosen_query}\".<br><br> <img src='{unsplash_img_url}' height='600'><br><br>"
+    f"Hiya, buddy!<br><br>{data_content} <br><br> ---------------------------------------------------------------"
+    f"<br><br>Here's an image! This came from the query \"{unsplash_chosen_query}\".<br><br> <img src='{unsplash_img_url}' height='600'><br><br>"
     f"Author: <b>{unsplash_author}</b>, <a href={unsplash_author_portfolio}>{unsplash_author_portfolio}</a>"
 )
 
