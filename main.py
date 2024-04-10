@@ -4,6 +4,7 @@ import yagmail
 import datetime
 import os
 import dotenv
+import pytz
 
 dotenv.load_dotenv()
 
@@ -18,8 +19,8 @@ UNSPLASH_ACCESS_KEY = os.getenv("UNSPLASH_ACCESS_KEY")
 begin_time = 6
 end_time = 21
 
-# UTC -8 -- Los Angeles
-timezone_offset = -8.0
+# timezone
+timezone = "America/Los_Angeles"
 
 # search query for random images
 unsplash_query = ["wild bird", "wild animal", "endangered species", "wild fish", "ocean", "train", "boat", "storm",
@@ -39,13 +40,12 @@ weather_data = response_weather.json()
 date_str = weather_data["hourly"]["time"][0]
 
 def format_date():
-    tzinfo = datetime.timezone(datetime.timedelta(hours=timezone_offset))
-    formatted_date = "{d:%A}, {d:%B} {d.day}, {d.year}".format(d=datetime.datetime.now(tzinfo))
+    formatted_date = "{d:%A}, {d:%B} {d.day}, {d.year}".format(d=datetime.datetime.now(pytz.timezone(timezone)))
     return formatted_date
 
 def current_time():
-    tzinfo = datetime.timezone(datetime.timedelta(hours=timezone_offset))
-    formatted_time = datetime.datetime.now().strftime("%I:%M %p")
+    formatted_time = datetime.datetime.now(pytz.timezone(timezone)).strftime("%I:%M %p")
+    formatted_time = formatted_time.lstrip("0")
     return formatted_time
 
 
