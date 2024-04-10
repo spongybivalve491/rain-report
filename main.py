@@ -18,6 +18,9 @@ UNSPLASH_ACCESS_KEY = os.getenv("UNSPLASH_ACCESS_KEY")
 begin_time = 6
 end_time = 21
 
+# UTC -8 -- Los Angeles
+timezone_offset = -8.0
+
 # search query for random images
 unsplash_query = ["wild bird", "wild animal", "endangered species", "wild fish", "ocean", "train", "boat", "storm",
                   "crab", "nature", "storm", "mountain", "fire", "camping", "wildlife", "coast guard", "navy", "flower",
@@ -36,10 +39,12 @@ weather_data = response_weather.json()
 date_str = weather_data["hourly"]["time"][0]
 
 def format_date():
-    formatted_date = "{d:%A}, {d:%B} {d.day}, {d.year}".format(d=datetime.datetime.now())
+    tzinfo = datetime.timezone(datetime.timedelta(hours=timezone_offset))
+    formatted_date = "{d:%A}, {d:%B} {d.day}, {d.year}".format(d=datetime.datetime.now(tzinfo))
     return formatted_date
 
 def current_time():
+    tzinfo = datetime.timezone(datetime.timedelta(hours=timezone_offset))
     formatted_time = datetime.datetime.now().strftime("%I:%M %p")
     return formatted_time
 
