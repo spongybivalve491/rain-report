@@ -19,13 +19,13 @@ UNSPLASH_ACCESS_KEY = os.getenv("UNSPLASH_ACCESS_KEY")
 begin_time = 6
 end_time = 21
 
-# timezone
+# https://gist.github.com/mjrulesamrat/0c1f7de951d3c508fb3a20b4b0b33a98
 timezone = "America/Los_Angeles"
 
 # search query for random images
 unsplash_query = ["wild bird", "wild animal", "endangered species", "wild fish", "ocean", "train", "boat", "storm",
                   "crab", "nature", "storm", "mountain", "fire", "camping", "wildlife", "coast guard", "navy", "flower",
-                  "tree", "forest"]
+                  "tree", "forest", "flower", "tornado", "military", "police", "whale", "pinniped", "bird"]
 
 # fetch a portrait orientation photo
 unsplash_optimized_for_mobile = True
