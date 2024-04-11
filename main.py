@@ -64,7 +64,7 @@ for hour in range(begin_time, end_time):
 data_content = str(rainfall_info)
 
 if not rainfall_info:
-    data_content = "Clear skies today (I think):)"
+    data_content = "Clear skies today (I think) :)"
 
 unsplash_chosen_query = random.choice(unsplash_query)
 
