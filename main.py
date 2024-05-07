@@ -30,6 +30,9 @@ unsplash_query = ["wild bird", "wild animal", "endangered species", "wild fish",
 # fetch a portrait orientation photo
 unsplash_optimized_for_mobile = True
 
+# only send email on rainy forcast
+rain_only_notification = True
+
 weather_api = f"https://api.open-meteo.com/v1/forecast?latitude={LATITUDE}&longitude=" + \
               f"{LONGITUDE}&hourly=precipitation&timezone=America%2FLos_Angeles&forecast_days=1"
 unsplash_api = "https://api.unsplash.com/photos/random/"
@@ -63,7 +66,7 @@ for hour in range(begin_time, end_time):
 
 data_content = str(rainfall_info)
 
-if not rainfall_info:
+if not rainfall_info and not rain_only_notification:
     data_content = "Clear skies today (I think) :)"
 
 unsplash_chosen_query = random.choice(unsplash_query)
@@ -94,4 +97,5 @@ contents = (
 )
 
 yag = yagmail.SMTP(MY_GMAIL_USER, MY_GMAIL_PASS)
-yag.send(to=EMAIL_SEND_TO, subject='Rain report for '+ readable_date + ' (' + current_time() + ")", contents=contents)
+if rainfall_info:
+    yag.send(to=EMAIL_SEND_TO, subject='Rain report for '+ readable_date + ' (' + current_time() + ")", contents=contents)
