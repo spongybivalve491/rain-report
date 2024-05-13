@@ -31,7 +31,7 @@ unsplash_query = ["wild bird", "wild animal", "endangered species", "wild fish",
 unsplash_optimized_for_mobile = True
 
 # only send email on rainy forcast
-rain_only_notification = True
+rain_only_notification = False
 
 weather_api = f"https://api.open-meteo.com/v1/forecast?latitude={LATITUDE}&longitude=" + \
               f"{LONGITUDE}&hourly=precipitation&timezone=America%2FLos_Angeles&forecast_days=1"
@@ -92,10 +92,15 @@ if unsplash_author_portfolio is None:
 
 contents = (
     f"Hiya, buddy!<br><br>{data_content} <br><br> ---------------------------------------------------------------"
-    f"<br><br>Here's an image! This came from the query \"{unsplash_chosen_query}\".<br><br> <img src='{unsplash_img_url}' height='600'><br><br>"
+    f"<br><br>Here's an image! This came from the query \"{unsplash_chosen_query}\".<br><br>"
+    f"<img src='{unsplash_img_url}' height='600'><br><br>"
     f"Author: <b>{unsplash_author}</b>, <a href={unsplash_author_portfolio}>{unsplash_author_portfolio}</a>"
 )
 
 yag = yagmail.SMTP(MY_GMAIL_USER, MY_GMAIL_PASS)
-if rainfall_info:
-    yag.send(to=EMAIL_SEND_TO, subject='Rain report for '+ readable_date + ' (' + current_time() + ")", contents=contents)
+if rainfall_info and rain_only_notification:
+    yag.send(to=EMAIL_SEND_TO, subject='(RAIN TODAY) Rain report for '+ readable_date + ' (' + current_time() + ")",
+            contents=contents)
+if not rain_only_notification:
+    yag.send(to=EMAIL_SEND_TO, subject='Rain report for ' + readable_date + ' (' + current_time() + ")",
+             contents=contents)
