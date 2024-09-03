@@ -31,7 +31,7 @@ unsplash_query = ["wild bird", "wild animal", "endangered species", "wild fish",
 unsplash_optimized_for_mobile = True
 
 # only send email on rainy forcast
-rain_only_notification = True
+rain_only_notification = False
 
 weather_api = f"https://api.open-meteo.com/v1/forecast?latitude={LATITUDE}&longitude=" + \
               f"{LONGITUDE}&hourly=precipitation&timezone=America%2FLos_Angeles&forecast_days=1"
