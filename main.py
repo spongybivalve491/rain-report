@@ -6,11 +6,9 @@ import os
 import dotenv
 import pytz
 from datetime import datetime as dt
-from datetime import datetime as dt
 
 dotenv.load_dotenv()
 
-# Environment variables
 # Environment variables
 LONGITUDE = os.getenv("LONGITUDE")
 LATITUDE = os.getenv("LATITUDE")
@@ -19,7 +17,6 @@ MY_GMAIL_PASS = os.getenv("MY_GMAIL_PASS")
 EMAIL_SEND_TO = os.getenv("EMAIL_SEND_TO")
 UNSPLASH_ACCESS_KEY = os.getenv("UNSPLASH_ACCESS_KEY")
 
-# Configuration
 # Configuration
 begin_time = 6
 end_time = 21
@@ -152,72 +149,11 @@ def send_email():
     yag = yagmail.SMTP(MY_GMAIL_USER, MY_GMAIL_PASS)
     subject = f"Daily Report for {readable_date} ({current_time_str})"
     
-    if rain_only_notification and "rain" in weather_report.lower():
-        yag.send(to=EMAIL_SEND_TO, subject=f"(RAIN TODAY) {subject}", contents=contents)
-    elif not rain_only_notification:
-        yag.send(to=EMAIL_SEND_TO, subject=subject, contents=contents)
-
-if __name__ == "__main__":
-    send_email()
-def get_random_image():
-    """Get a random image from Unsplash"""
-    unsplash_chosen_query = random.choice(unsplash_query)
-    unsplash_parameters = {
-        "query": unsplash_chosen_query,
-        "client_id": UNSPLASH_ACCESS_KEY,
-        "count": 1
-    }
-    
-    if unsplash_optimized_for_mobile:
-        unsplash_parameters["orientation"] = "portrait"
-    
-    unsplash_response = requests.get(url="https://api.unsplash.com/photos/random/", params=unsplash_parameters)
-    unsplash_data = unsplash_response.json()
-    return {
-        "url": unsplash_data[0]["urls"]["raw"],
-        "author": unsplash_data[0]["user"]["username"],
-        "portfolio": unsplash_data[0]["user"]["portfolio_url"] or unsplash_data[0]["links"]["html"],
-        "query": unsplash_chosen_query
-    }
-
-def format_current_date():
-    """Format current date nicely"""
-    return "{d:%A}, {d:%B} {d.day}, {d.year}".format(d=datetime.datetime.now(pytz.timezone(timezone)))
-
-def format_current_time():
-    """Format current time nicely"""
-    formatted_time = datetime.datetime.now(pytz.timezone(timezone)).strftime("%I:%M %p")
-    return formatted_time.lstrip("0")
-
-def send_email():
-    """Send the combined email with weather and MLB info"""
-    # Gather all data
-    readable_date = format_current_date()
-    current_time_str = format_current_time()
-    weather_report = get_weather_report()
-    mlb_matchup = get_mlb_matchup()
-    image_data = get_random_image()
-    
-    # Prepare email content
-    contents = (
-        f"<h2>Weather Report</h2>"
-        f"{weather_report}<br><br>"
-        f"---------------------------------------------------------------<br>"
-        f"<h2>MLB Game of Interest</h2>"
-        f"{mlb_matchup}<br><br>"
-        f"---------------------------------------------------------------<br><br><br>"
-        f"Here's an image! This came from the query \"{image_data['query']}\".<br><br>"
-        f"<img src='{image_data['url']}' height='600'><br><br>"
-        f"Author: <b>{image_data['author']}</b>, <a href={image_data['portfolio']}>{image_data['portfolio']}</a>"
-    )
-    
-    # Send email
-    yag = yagmail.SMTP(MY_GMAIL_USER, MY_GMAIL_PASS)
-    subject = f"Daily Report for {readable_date} ({current_time_str})"
-    
-    if rain_only_notification and "rain" in weather_report.lower():
-        yag.send(to=EMAIL_SEND_TO, subject=f"(RAIN TODAY) {subject}", contents=contents)
-    elif not rain_only_notification:
+    # Only send one email based on conditions
+    if rain_only_notification:
+        if "rain" in weather_report.lower():
+            yag.send(to=EMAIL_SEND_TO, subject=f"(RAIN TODAY) {subject}", contents=contents)
+    else:
         yag.send(to=EMAIL_SEND_TO, subject=subject, contents=contents)
 
 if __name__ == "__main__":
