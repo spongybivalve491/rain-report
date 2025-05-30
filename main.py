@@ -30,10 +30,7 @@ rain_only_notification = False
 def get_mlb_matchup():
     """Find the highest priority MLB game happening today"""
     highlighted_teams = [
-        "San Francisco Giants",
-        "Los Angeles Dodgers",
-        "Toronto Blue Jays",
-        "Milwaukee Brewers"
+        "San Francisco Giants"
     ]
     
     url = "https://statsapi.mlb.com/api/v1/schedule/games/?sportId=1"
